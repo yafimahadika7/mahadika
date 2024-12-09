@@ -1481,70 +1481,52 @@ p {
 }
 
 /* Setiap komentar */
-.comment {
-  background-color: rgba(255, 255, 255, 0.8); /* Latar belakang putih transparan untuk membedakan komentar */
-  padding: 3px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  max-width: 80%;
+.comment1 {
   position: relative;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 60%;
+  margin: 50px 0 0 250px;
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  overflow-wrap: break-word;
 }
 
-.comment:last-child {
-  margin-bottom: 0;
-}
-
-/* Nama pengguna */
-.comment .name {
-  margin-left: 10px;
-  margin-top: 10px;
-  font-weight: bold;
-  font-size: 1rem;
-  color: #007bff; /* Biru untuk nama pengguna */
-}
-
-/* Pesan komentar */
-.comment .message {
-  margin-top: 5px;
-  font-style: italic;
-  color: #555;
-  margin-left: 10px;
-}
-
-/* Tanggal komentar */
-.comment .date {
-  position: absolute;
-  bottom: 5px;
-  right: 10px;
-  color: #888;
-  font-size: 0.9rem;
-}
-
-/* Styling untuk bubble chat kiri (untuk komentar yang lebih lama) */
-.comment.left {
+.comment1.left {
+  background-color: #f1f1f1;
+  margin-left: 0;
   margin-right: auto;
-  background-color: rgba(230, 230, 230, 0.8); /* Warna berbeda untuk komentar kiri */
+  text-align: left;
 }
 
-/* Styling untuk bubble chat kanan (untuk komentar terbaru) */
-.comment.right {
+.comment1.right {
+  background-color: #0078FF;
+  color: white;
   margin-left: auto;
-  background-color: rgba(0, 123, 255, 0.8); /* Warna biru untuk komentar kanan */
-  color: #fff; /* Warna teks putih untuk bubble kanan */
+  margin-right: 0;
+  text-align: right;
 }
 
-.comment1 .section-title4{
+.comment1 .name {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.comment1 .message {
+  margin-bottom: 5px;
+}
+
+.comment1 .date {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.comment1 .section-title4 {
   font-size: 32px;
   color: #0a0a0a;
   text-transform: uppercase;
   text-align: center;
   font-weight: 700;
   margin-bottom: 60px;
-  margin-top: 50px;
+  margin-top: -20px;
 }
-
-.comment1 {
-  padding: 0 20% 2% 20%;
-}
-

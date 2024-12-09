@@ -1,73 +1,67 @@
+// Import express dan mysql
 const express = require('express');
-const mysql = require('mysql2');
+const mysql = require('mysql');
 const bodyParser = require('body-parser');
-const path = require('path');
+const cors = require('cors');
 
+
+// Inisialisasi express app
 const app = express();
-const PORT = 3000;
 
-// Middleware
+
+// Konfigurasi body-parser untuk parsing data dari form
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
 
-// Database Connection
+// Konfigurasi koneksi ke database MySQL
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',       // Default MySQL username in XAMPP
-    password: '',       // Default MySQL password in XAMPP (empty)
-    database: 'comment_system', // Nama database Anda
+  host: 'localhost',         // ganti dengan host Anda jika perlu
+  user: 'mahadika',              // ganti dengan username Anda
+  password: 'janganangel',              // ganti dengan password Anda
+  database: 'contact_form',   // nama database yang sudah dibuat
+  port: 3306
 });
 
+// Menghubungkan ke database
 db.connect((err) => {
+  if (err) {
+    console.error('Database connection failed: ' + err.stack);
+    return;
+  }
+  console.log('Connected to database.');
+});
+
+// Endpoint untuk menerima data dari formulir kontak
+app.post('/send-message', (req, res) => {
+  const { name, message } = req.body;
+
+  if (!name || !message) {
+    return res.status(400).send('Name and message are required.');
+  }
+
+  const query = 'INSERT INTO comments (name, message) VALUES (?, ?)';
+  db.query(query, [name, message], (err, result) => {
     if (err) {
-        console.error('Database connection failed:', err.stack);
-        return;
+      console.error('Error inserting data:', err);
+      return res.status(500).send('Server error.');
     }
-    console.log('Connected to MySQL database.');
+    res.status(200).send('Your message has been sent. Thank you!');
+  });
 });
 
-// Routes
-
-// Home Page
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// API untuk menambahkan komentar
-app.post('/add-comment', (req, res) => {
-    const { name, message } = req.body;
-
-    // Pastikan data tidak kosong
-    if (!name || !message) {
-        return res.status(400).json({ success: false, message: 'Name and message are required.' });
-    }
-
-    // Query untuk menyimpan hanya name dan message
-    const query = 'INSERT INTO comments (name, message) VALUES (?, ?)';
-    db.query(query, [name, message], (err, result) => {
-        if (err) {
-            console.error(err);
-            res.status(500).json({ success: false, message: 'Failed to add comment' });
-            return;
-        }
-        res.json({ success: true, message: 'Comment added successfully' });
-    });
-});
-
-// API untuk mengambil semua komentar
-app.get('/comments', (req, res) => {
-    const query = 'SELECT name, message, created_at FROM comments ORDER BY created_at DESC';
+app.get('/get-comments', (req, res) => {
+    const query = 'SELECT name, message FROM comments';
     db.query(query, (err, results) => {
       if (err) {
-        console.error(err);
-        return res.status(500).json({ success: false, message: 'Failed to fetch comments' });
+        console.error('Error fetching data:', err);
+        return res.status(500).send({ error: 'Server error.' });
       }
-      res.json(results);
+      res.status(200).json(results);
     });
 });
 
-// Menjalankan server
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+// Menjalankan server pada port tertentu
+app.listen(3000, () => {
+  console.log('Server is running on http://localhost:3000');
 });
